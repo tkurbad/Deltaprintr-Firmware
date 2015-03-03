@@ -231,7 +231,10 @@ static void lcd_status_screen()
 static void lcd_return_to_status()
 {
     encoderPosition = 0;
-    currentMenu = lcd_status_screen;
+// Ryan's Mod 2/26/15... changed timeout screen to main menu instead of status screen (thanks mildmojo)
+// LCD updates on status screen cause stuttering of the print head and "blobs" on the finished print, especially at higher speeds.
+//    currentMenu = lcd_status_screen; // <-- all menus return & time out to status screen
+	currentMenu = lcd_main_menu; // <-- all menus return & time out to main menu
 }
 
 static void lcd_sdcard_pause()
