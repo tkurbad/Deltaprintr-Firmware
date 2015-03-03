@@ -477,7 +477,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 #define XYZ_PULLEY_TEETH 16
 #define XYZ_STEPS (XYZ_FULL_STEPS_PER_ROTATION * XYZ_MICROSTEPS / double(XYZ_BELT_PITCH) / double(XYZ_PULLEY_TEETH))
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {57.8053,57.8053,57.8053, 94.5}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {57.8053,57.8053,57.8053, 109.4}  // Ryan's Mod... changed extruder calibration steps/mm from 94.5 to 109.4
 #define DEFAULT_MAX_FEEDRATE          {200, 200, 200, 25}    // (mm/sec)
 #define DEFAULT_MAX_ACCELERATION      {2000,2000,2000,2000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
