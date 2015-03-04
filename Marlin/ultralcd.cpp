@@ -1132,11 +1132,12 @@ void lcd_update()
 #endif
 
 #ifdef ULTIPANEL
-        if(timeoutToStatus < millis() && currentMenu != lcd_status_screen)
-        {
-            lcd_return_to_status();
-            lcdDrawUpdate = 2;
-        }
+// Ryan's edit 3/3/15 - remove redraw of status screen by commenting the section below (per mildmojo's recommendation)
+//        if(timeoutToStatus < millis() && currentMenu != lcd_status_screen)
+//        {
+//            lcd_return_to_status();
+//            lcdDrawUpdate = 2;
+//        }
 #endif//ULTIPANEL
         if (lcdDrawUpdate == 2)
             lcd_implementation_clear();
