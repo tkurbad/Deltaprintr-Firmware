@@ -132,10 +132,10 @@ static void lcd_implementation_init()
 			u8g.drawBitmapP(0,0,START_BMPBYTEWIDTH,START_BMPHEIGHT,start_bmp);
 			// Welcome message
 			u8g.setFont(u8g_font_6x10_marlin);
-			u8g.drawStr(59,13,"Deltaprintr");
+			u8g.drawStr(59,13,"Deltaprintr"); 
 			u8g.setFont(u8g_font_6x10_marlin);
-			u8g.drawStr(63,42,"Marlin");
-+ 			u8g.drawStr(63,52,"Firmware");
+			u8g.drawStr(63,42,"Marlin"); 
+			u8g.drawStr(63,52,"Firmware");
 			u8g.setFont(u8g_font_5x8);
 			u8g.drawStr(70,62,"by ErikZalm");
 	   } while( u8g.nextPage() );
@@ -227,17 +227,17 @@ static void lcd_implementation_status_screen()
 		 u8g.setColorIndex(1);	// black on white
 		}
  
- +/// Disabled because extra extruders removed from bitmap.
-// Extruder 2
- //u8g.setFont(FONT_STATUSMENU);
- //#if EXTRUDERS > 1
- //u8g.setPrintPos(31,6);
- //u8g.print(itostr3(int(degTargetHotend(1) + 0.5)));
- //lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- //u8g.setPrintPos(31,27);
- //u8g.print(itostr3(int(degHotend(1) + 0.5)));
- //lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- //if (!isHeatingHotend(1)) u8g.drawBox(38,17,2,2);
+/// Disabled because extra extruders removed from bitmap.
+// // Extruder 2
+// u8g.setFont(FONT_STATUSMENU);
+// #if EXTRUDERS > 1
+// u8g.setPrintPos(31,6);
+// u8g.print(itostr3(int(degTargetHotend(1) + 0.5)));
+// lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+// u8g.setPrintPos(31,27);
+// u8g.print(itostr3(int(degHotend(1) + 0.5)));
+// lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+// if (!isHeatingHotend(1)) u8g.drawBox(38,17,2,2);
 //	else
 //		{
 //		 u8g.setColorIndex(0);	// white on black
@@ -249,16 +249,16 @@ static void lcd_implementation_status_screen()
 // u8g.print("---");
 // #endif
 // 
- // Extruder 3
- //u8g.setFont(FONT_STATUSMENU);
- //# if EXTRUDERS > 2
- //u8g.setPrintPos(55,6);
- //u8g.print(itostr3(int(degTargetHotend(2) + 0.5)));
- //lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- //u8g.setPrintPos(55,27);
- //u8g.print(itostr3(int(degHotend(2) + 0.5)));
- //lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- //if (!isHeatingHotend(2)) u8g.drawBox(62,17,2,2);
+// // Extruder 3
+// u8g.setFont(FONT_STATUSMENU);
+// # if EXTRUDERS > 2
+// u8g.setPrintPos(55,6);
+// u8g.print(itostr3(int(degTargetHotend(2) + 0.5)));
+// lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+// u8g.setPrintPos(55,27);
+// u8g.print(itostr3(int(degHotend(2) + 0.5)));
+// lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+// if (!isHeatingHotend(2)) u8g.drawBox(62,17,2,2);
 //	else
 //		{
 //		 u8g.setColorIndex(0);	// white on black
