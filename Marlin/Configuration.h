@@ -578,6 +578,9 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
  #define ULTRA_LCD  //general LCD support, also 16x2
  #define DOGLCD  // Support for SPI LCD 128x64 (Controller ST7565R graphic Display Family)
  #define ULTIMAKERCONTROLLER //as available from the Ultimaker online store.
+ #if defined(DEFAULT_LCD_CONTRAST)
+  #undef DEFAULT_LCD_CONTRAST
+ #endif
  #define DEFAULT_LCD_CONTRAST 85
  #define ENCODER_PULSES_PER_STEP 2
  #define ENCODER_STEPS_PER_MENU_ITEM 1
