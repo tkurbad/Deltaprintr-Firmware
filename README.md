@@ -7,7 +7,7 @@ Based on Marlin, see README.orig.md.
 This firmware includes all patches and fixes collected and created by user [johntron](https://github.com/johntron).
 Thank you for the good work, John.
 
-I added some fixes to have it compile with [Arduino IDE 1.6+](https://www.arduino.cc) and the newest [u8glib](https://github.com/olikraus/u8glib).
+I added some fixes to make it compile with [Arduino IDE 1.6+](https://www.arduino.cc) and the newest [u8glib](https://github.com/olikraus/u8glib).
 
 Build instructions (Gentoo Linux 64Bit)
 =======================================
