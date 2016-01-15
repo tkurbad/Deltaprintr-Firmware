@@ -37,22 +37,23 @@
 # from the commandline with "make HARDWARE_MOTHERBOARD=71" for example
 
 # This defined the board you are compiling for (see Configuration.h for the options)
-HARDWARE_MOTHERBOARD ?= 11
+HARDWARE_MOTHERBOARD ?= 67
 
 # Arduino source install directory, and version number
-ARDUINO_INSTALL_DIR  ?= /Applications/Arduino.app/Contents/Resources/Java
-ARDUINO_VERSION      ?= 105
+ARDUINO_INSTALL_DIR  ?= /home/people/tkurbad/projects/deltaprintr/arduino-1.6.7/
+ARDUINO_VERSION      ?= 167
+ARDUINO              = $(ARDUINO_VERSION)
 
 # You can optionally set a path to the avr-gcc tools. Requires a trailing slash. (ex: /usr/local/avr-gcc/bin)
-AVR_TOOLS_PATH ?=
+AVR_TOOLS_PATH ?= $(ARDUINO_INSTALL_DIR)/hardware/tools/avr/bin/
 
 #Programmer configuration
 UPLOAD_RATE        ?= 115200
 AVRDUDE_PROGRAMMER ?= arduino
-UPLOAD_PORT        ?= /dev/arduino
+UPLOAD_PORT        ?= /dev/ttyACM0
 
 #Directory used to build files in, contains all the build files, from object files to the final hex file.
-BUILD_DIR          ?= applet
+BUILD_DIR          ?= firmware
 
 # This defines whether Liquid_TWI2 support will be built
 LIQUID_TWI2        ?= 0
@@ -196,16 +197,16 @@ F_CPU ?= 16000000
 # Libraries, the "hardware variant" are for boards
 # that derives from that, and their source are present in
 # the main Marlin source directory
-ifeq ($(HARDWARE_VARIANT), arduino)
+#ifeq ($(HARDWARE_VARIANT), arduino)
 HARDWARE_DIR = $(ARDUINO_INSTALL_DIR)/hardware
-else
-ifeq ($(shell [ $(ARDUINO_VERSION) -ge 100 ] && echo true), true)
-HARDWARE_DIR = ../ArduinoAddons/Arduino_1.x.x
-else
-HARDWARE_DIR = ../ArduinoAddons/Arduino_0.xx
-endif
-endif
-HARDWARE_SRC = $(HARDWARE_DIR)/$(HARDWARE_VARIANT)/cores/arduino
+HARDWARE_SRC = $(HARDWARE_DIR)/$(HARDWARE_VARIANT)/avr/cores/arduino
+#else
+#ifeq ($(shell [ $(ARDUINO_VERSION) -ge 100 ] && echo true), true)
+#HARDWARE_DIR = ../ArduinoAddons/Arduino_1.x.x
+#else
+#HARDWARE_DIR = ../ArduinoAddons/Arduino_0.xx
+#endif
+#endif
 
 TARGET = $(notdir $(CURDIR))
 
@@ -217,7 +218,7 @@ VPATH = .
 VPATH += $(BUILD_DIR)
 VPATH += $(HARDWARE_SRC)
 ifeq ($(HARDWARE_VARIANT), arduino)
-VPATH += $(ARDUINO_INSTALL_DIR)/libraries/LiquidCrystal
+VPATH += $(ARDUINO_INSTALL_DIR)/libraries/LiquidCrystal/src
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/SPI
 ifeq ($(LIQUID_TWI2), 1)
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/Wire
@@ -243,7 +244,10 @@ endif
 endif
 ifeq ($(HARDWARE_VARIANT), arduino)
 HARDWARE_SUB_VARIANT ?= mega
-VPATH += $(ARDUINO_INSTALL_DIR)/hardware/arduino/variants/$(HARDWARE_SUB_VARIANT)
+VPATH += $(ARDUINO_INSTALL_DIR)/hardware/arduino/avr/variants/$(HARDWARE_SUB_VARIANT)
+VPATH += /home/people/tkurbad/Arduino/libraries/U8glib/src
+VPATH += /home/people/tkurbad/Arduino/libraries/U8glib/src/clib
+VPATH += /home/people/tkurbad/Arduino/libraries/Time
 else
 HARDWARE_SUB_VARIANT ?= standard
 VPATH += $(HARDWARE_DIR)/$(HARDWARE_VARIANT)/variants/$(HARDWARE_SUB_VARIANT)
@@ -260,10 +264,10 @@ CXXSRC = WMath.cpp WString.cpp Print.cpp Marlin_main.cpp	\
 	MarlinSerial.cpp Sd2Card.cpp SdBaseFile.cpp SdFatUtil.cpp	\
 	SdFile.cpp SdVolume.cpp motion_control.cpp planner.cpp		\
 	stepper.cpp temperature.cpp cardreader.cpp ConfigurationStore.cpp \
-	watchdog.cpp SPI.cpp Servo.cpp Tone.cpp ultralcd.cpp digipot_mcp4451.cpp \
-	vector_3.cpp qr_solve.cpp
+	watchdog.cpp Servo.cpp Tone.cpp ultralcd.cpp digipot_mcp4451.cpp \
+	vector_3.cpp qr_solve.cpp BlinkM.cpp
 ifeq ($(LIQUID_TWI2), 0)
-CXXSRC += LiquidCrystal.cpp
+CXXSRC += U8glib.cpp
 else
 SRC += twi.c
 CXXSRC += Wire.cpp LiquidTWI2.cpp
