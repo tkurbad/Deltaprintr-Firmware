@@ -42,14 +42,14 @@ cd ~/projects/deltaprintr
 git clone git@github.com:tkurbad/Deltaprintr-Firmware.git
 ```
 - Connect your Deltaprintr via USB.
-- **Make sure**, the corresponding serial port device `/dev/ttyACM*` gets created.
+- **Make sure**, the corresponding serial port device `/dev/ttyUSB*` gets created.
 - Open `~/projects/deltaprintr/Deltaprintr-Firmware/Marlin/Marlin.ino` in the Arduino IDE:
 ```
 cd ~/projects/deltaprintr/arduino-1.6.7
 ./arduino ~/projects/deltaprintr/Deltaprintr-Firmware/Marlin/Marlin.ino
 ```
 - In the Arduino IDE, choose *Tools* &rarr; *Board* &rarr; *Arduino/Genuino Mega or Mega 2560*.
-- Choose the right Serial Port `/dev/ttyACM*`, e.g. `/dev/ttyACM0`.
+- Choose the right Serial Port `/dev/ttyUSB*`, e.g. `/dev/ttyUSB0`.
 - Add required libraries. In the Arduino IDE, choose *Sketch* &rarr; *Include library* &rarr; *Manage libraries*, 
 then click on *Time* &rarr; *Install* and *u8glib* &rarr; *Install*.
 - Choose *Sketch* &rarr; *Verify/Compile*.
