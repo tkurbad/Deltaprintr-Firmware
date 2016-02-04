@@ -199,7 +199,7 @@
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
 // You should use MINTEMP for thermistor short/failure protection.
 #define HEATER_0_MAXTEMP 285
-#define HEATER_1_MAXTEMP 285
+#define HEATER_1_MAXTEMP 2000
 #define HEATER_2_MAXTEMP 285
 #define BED_MAXTEMP 2000
 
@@ -456,9 +456,12 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
     #define NONLINEAR_BED_LEVELING
   #endif
 
-  // Force Sensing Resistors under the print surface, wired to heated bed thermistor input.
+  // Force Sensing Resistors under the print surface.
   // Autolevel by measuring how much the hotend is pushing down, without separate Z probe.
   #define FSR_BED_LEVELING
+  // If defined, FSRs are wired to thermistor input of extruder 1.
+  // If commented out they are wired to heated bed thermistor input.
+  #define FSR_TEMP_SENSOR_1
 #endif
 
 
