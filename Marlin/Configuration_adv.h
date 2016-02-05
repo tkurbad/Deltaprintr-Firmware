@@ -12,11 +12,11 @@
   #error "You cannot have more than one Extruder and FSRs connected to thermistor 1 input at the same time."
 #endif
 
-//#ifdef FSR_TEMP_SENSOR_1
-  //#undef EXTRUDERS
-  //#define EXTRUDERS 2
-//#endif
-
+/*#ifdef FSR_TEMP_SENSOR_1
+  #undef EXTRUDERS
+  #define EXTRUDERS 2
+#endif
+*/
 #ifdef BED_LIMIT_SWITCHING
   #define BED_HYSTERESIS 2 //only disable heating if T>target+BED_HYSTERESIS and enable heating if T>target-BED_HYSTERESIS
 #endif

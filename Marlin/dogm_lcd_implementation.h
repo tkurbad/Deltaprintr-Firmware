@@ -213,31 +213,22 @@ static void lcd_implementation_status_screen()
  
  // Extruder 1
  u8g.setFont(FONT_STATUSMENU);
- u8g.setPrintPos(12,6);
+ u8g.setPrintPos(21,6);
  u8g.print(itostr3(int(degTargetHotend(0) + 0.5)));
  lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- u8g.setPrintPos(12,27);
+ u8g.setPrintPos(21,27);
  u8g.print(itostr3(int(degHotend(0) + 0.5)));
  lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- if (!isHeatingHotend(0)) u8g.drawBox(20,17,2,2);
+ if (!isHeatingHotend(0)) u8g.drawBox(29,17,2,2);
 	else
 		{
 		 u8g.setColorIndex(0);	// white on black
-		 u8g.drawBox(20,17,2,2);
+		 u8g.drawBox(29,17,2,2);
 		 u8g.setColorIndex(1);	// black on white
 		}
  
- // FSR board leveling sensors
- u8g.setFont(FONT_STATUSMENU);
- #ifdef FSR_TEMP_SENSOR_1
- u8g.setPrintPos(41,27);
- u8g.print(itostr3(int(degHotend(1) + 0.5)));
- lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- u8g.drawBox(41,17,2,2);
- #endif
-
 /// Disabled because extra extruders removed from bitmap.
-// Extruder 2
+// // Extruder 2
 // u8g.setFont(FONT_STATUSMENU);
 // #if EXTRUDERS > 1
 // u8g.setPrintPos(31,6);
