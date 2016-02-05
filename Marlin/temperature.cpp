@@ -40,7 +40,9 @@
 int target_temperature[EXTRUDERS] = { 0 };
 int target_temperature_bed = 0;
 int current_temperature_raw[EXTRUDERS] = { 0 };
-int raw_temp_1_sample = 0;
+#ifdef FSR_TEMP_SENSOR_1
+  int raw_temp_1_sample = 0;
+#endif
 float current_temperature[EXTRUDERS] = { 0.0 };
 int current_temperature_bed_raw = 0;
 int raw_temp_bed_sample = 0;
@@ -834,7 +836,7 @@ void tp_init()
   }
 #endif //MAXTEMP
 
-#if (EXTRUDERS > 1) && defined(HEATER_1_MINTEMP)
+#if ((EXTRUDERS > 1) || defined(FSR_TEMP_SENSOR1)) && defined(HEATER_1_MINTEMP)
   minttemp[1] = HEATER_1_MINTEMP;
   while(analog2temp(minttemp_raw[1], 1) < HEATER_1_MINTEMP) {
 #if HEATER_1_RAW_LO_TEMP < HEATER_1_RAW_HI_TEMP
@@ -844,7 +846,7 @@ void tp_init()
 #endif
   }
 #endif // MINTEMP 1
-#if (EXTRUDERS > 1) && defined(HEATER_1_MAXTEMP)
+#if ((EXTRUDERS > 1) || defined(FSR_TEMP_SENSOR1)) && defined(HEATER_1_MAXTEMP)
   maxttemp[1] = HEATER_1_MAXTEMP;
   while(analog2temp(maxttemp_raw[1], 1) > HEATER_1_MAXTEMP) {
 #if HEATER_1_RAW_LO_TEMP < HEATER_1_RAW_HI_TEMP
@@ -1060,7 +1062,7 @@ ISR(TIMER0_COMPB_vect)
   static unsigned char temp_state = 8;
   static unsigned char pwm_count = (1 << SOFT_PWM_SCALE);
   static unsigned char soft_pwm_0;
-  #if (EXTRUDERS > 1) || defined(HEATERS_PARALLEL)
+  #if (EXTRUDERS > 1) || defined(HEATERS_PARALLEL) || defined(FSR_TEMP_SENSOR_1)
   static unsigned char soft_pwm_1;
   #endif
   #if EXTRUDERS > 2
@@ -1079,9 +1081,11 @@ ISR(TIMER0_COMPB_vect)
       #endif
     } else WRITE(HEATER_0_PIN,0);
 	
-    #if EXTRUDERS > 1
+    #if (EXTRUDERS > 1) || defined(FSR_TEMP_SENSOR_1)
     soft_pwm_1 = soft_pwm[1];
-    if(soft_pwm_1 > 0) WRITE(HEATER_1_PIN,1); else WRITE(HEATER_1_PIN,0);
+    #ifndef FSR_TEMP_SENSOR_1
+      if(soft_pwm_1 > 0) WRITE(HEATER_1_PIN,1); else WRITE(HEATER_1_PIN,0);
+    #endif
     #endif
     #if EXTRUDERS > 2
     soft_pwm_2 = soft_pwm[2];
@@ -1117,7 +1121,7 @@ ISR(TIMER0_COMPB_vect)
   
   pwm_count += (1 << SOFT_PWM_SCALE);
   pwm_count &= 0x7f;
-  
+
   switch(temp_state) {
     case 0: // Prepare TEMP_0
       #if defined(TEMP_0_PIN) && (TEMP_0_PIN > -1)
@@ -1217,7 +1221,7 @@ ISR(TIMER0_COMPB_vect)
     if (!temp_meas_ready) //Only update the raw values if they have been read. Else we could be updating them during reading.
     {
       current_temperature_raw[0] = raw_temp_0_value;
-#if EXTRUDERS > 1
+#if (EXTRUDERS > 1) || defined(FSR_TEMP_SENSOR_1)
       current_temperature_raw[1] = raw_temp_1_value;
 #endif
 #ifdef TEMP_SENSOR_1_AS_REDUNDANT
@@ -1250,7 +1254,7 @@ ISR(TIMER0_COMPB_vect)
 #endif
         min_temp_error(0);
     }
-#if EXTRUDERS > 1
+#if (EXTRUDERS > 1) || defined(FSR_TEMP_SENSOR_1)
 #if HEATER_1_RAW_LO_TEMP > HEATER_1_RAW_HI_TEMP
     if(current_temperature_raw[1] <= maxttemp_raw[1]) {
 #else
@@ -1341,5 +1345,3 @@ float unscalePID_d(float d)
 }
 
 #endif //PIDTEMP
-
-
