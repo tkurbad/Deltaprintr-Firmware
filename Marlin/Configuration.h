@@ -201,7 +201,7 @@
 #define HEATER_0_MAXTEMP 285
 #define HEATER_1_MAXTEMP 2000
 #define HEATER_2_MAXTEMP 285
-#define BED_MAXTEMP 2000
+#define BED_MAXTEMP 130
 
 // If your bed has low resistance e.g. .6 ohm and throws the fuse you can duty cycle it to reduce the
 // average current. The value should be an integer and the heat bed will be turned on for 1 interval of

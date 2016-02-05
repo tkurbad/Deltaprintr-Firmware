@@ -12,10 +12,12 @@
   #error "You cannot have more than one Extruder and FSRs connected to thermistor 1 input at the same time."
 #endif
 
-//#ifdef FSR_TEMP_SENSOR_1
-  //#undef EXTRUDERS
-  //#define EXTRUDERS 2
-//#endif
+// Sanitize BED_MAXTEMP
+#if (BED_MAXTEMP > 150) && defined(FSR_TEMP_SENSOR_1)
+  #warning "BED_MAXTEMP too high for heated bed. Resetting to 130."
+  #undef BED_MAXTEMP
+  #define BED_MAXTEMP 130
+#endif
 
 #ifdef BED_LIMIT_SWITCHING
   #define BED_HYSTERESIS 2 //only disable heating if T>target+BED_HYSTERESIS and enable heating if T>target-BED_HYSTERESIS

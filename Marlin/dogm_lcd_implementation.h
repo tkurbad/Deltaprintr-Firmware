@@ -228,12 +228,11 @@ static void lcd_implementation_status_screen()
 		}
  
  // FSR board leveling sensors
- u8g.setFont(FONT_STATUSMENU);
  #ifdef FSR_TEMP_SENSOR_1
+ u8g.setFont(FONT_STATUSMENU);
  u8g.setPrintPos(41,27);
  u8g.print(itostr3(int(degHotend(1) + 0.5)));
  lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- u8g.drawBox(41,17,2,2);
  #endif
 
 /// Disabled because extra extruders removed from bitmap.
