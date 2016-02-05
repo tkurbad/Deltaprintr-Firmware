@@ -4,19 +4,7 @@
 //===========================================================================
 //=============================Thermal Settings  ============================
 //===========================================================================
-#if defined(FSR_TEMP_SENSOR_1) && !defined(FSR_BED_LEVELING)
-  #undef FSR_TEMP_SENSOR_1
-#endif
 
-#if EXTRUDERS > 1 && defined(FSR_TEMP_SENSOR_1)
-  #error "You cannot have more than one Extruder and FSRs connected to thermistor 1 input at the same time."
-#endif
-
-/*#ifdef FSR_TEMP_SENSOR_1
-  #undef EXTRUDERS
-  #define EXTRUDERS 2
-#endif
-*/
 #ifdef BED_LIMIT_SWITCHING
   #define BED_HYSTERESIS 2 //only disable heating if T>target+BED_HYSTERESIS and enable heating if T>target-BED_HYSTERESIS
 #endif
@@ -88,7 +76,7 @@
 // Multiple extruders can be assigned to the same pin in which case
 // the fan will turn on when any selected extruder is above the threshold.
 #define EXTRUDER_0_AUTO_FAN_PIN   4
-#define EXTRUDER_1_AUTO_FAN_PIN   5
+#define EXTRUDER_1_AUTO_FAN_PIN   -1
 #define EXTRUDER_2_AUTO_FAN_PIN   -1
 #define EXTRUDER_AUTO_FAN_TEMPERATURE 50
 #define EXTRUDER_AUTO_FAN_SPEED   255  // == full speed
@@ -436,6 +424,15 @@ const unsigned int dropsegments=5; //everything with less than this number of st
 //===========================================================================
 //=============================  Define Defines  ============================
 //===========================================================================
+#ifdef FSR_TEMP_SENSOR_1
+  #if EXTRUDERS > 1
+    #error "You cannot have more than one Extruder and FSRs connected to thermistor 1 input at the same time."
+  #else
+    #undef EXTRUDERS
+    #define EXTRUDERS 2
+  #endif
+#endif
+
 #if EXTRUDERS > 1 && defined TEMP_SENSOR_1_AS_REDUNDANT
   #error "You cannot use TEMP_SENSOR_1_AS_REDUNDANT if EXTRUDERS > 1"
 #endif
