@@ -911,12 +911,8 @@ bool touching_print_surface() {
   static long FSR_TRIGGERED_TIME;
   static float FSR_TRIGGERED_ZPOS; 
 
-  // Let's take one sample reading.
-#ifdef FSR_TEMP_SENSOR_1
-  FSR_READING = rawTemp1Sample();
-#else
+  // Let's take one sample reading. 
   FSR_READING = rawBedSample();
-#endif
 
   if ( FSR_READING < ( FSR_TRIGGER_THRESHOLD )) {
     FSR_TRIGGERED=true;
@@ -1057,11 +1053,7 @@ void fsr_calibration() {
 
   for( fsr_idx=0; fsr_idx < FSR_SAMPLES ; fsr_idx++ ) {
     fsr_tally++;
-#ifdef FSR_TEMP_SENSOR_1
-    fsr_reading = rawTemp1Sample();
-#else
     fsr_reading = rawBedSample();
-#endif
     fsr_values += fsr_reading;
     delay(100);
     
@@ -1103,11 +1095,7 @@ void fsr_calibration() {
     feedrate = old_feedrate;
 
     fsr_tally++;
-#ifdef FSR_TEMP_SENSOR_1
-    fsr_reading = rawTemp1Sample();
-#else
     fsr_reading = rawBedSample();
-#endif
     fsr_values += fsr_reading;
 
     // Calculate the current average
@@ -1282,11 +1270,7 @@ static float probe_pt(float x, float y, float z_before) {
   SERIAL_PROTOCOL(measured_z);
 #ifdef FSR_BED_LEVELING
   SERIAL_PROTOCOLPGM(" FSR: ");
-#ifdef FSR_TEMP_SENSOR_1
-  SERIAL_PROTOCOL(rawTemp1Sample());
-#else
   SERIAL_PROTOCOL(rawBedSample());
-#endif
 #endif
   SERIAL_PROTOCOLPGM("\n");
   return measured_z;
@@ -2701,11 +2685,7 @@ void process_commands()
       };
 
       SERIAL_ECHOPGM("Reading:");
-#ifdef FSR_TEMP_SENSOR_1
-      SERIAL_ECHO(rawTemp1Sample());
-#else
       SERIAL_ECHO(rawBedSample());
-#endif
 
       SERIAL_ECHOLNPGM(" ");
 

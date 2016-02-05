@@ -40,9 +40,6 @@ extern float current_temperature[EXTRUDERS];
   extern int current_temperature_raw[EXTRUDERS];
   extern int current_temperature_bed_raw;
 #endif
-#ifdef FSR_TEMP_SENSOR_1
-  extern int raw_temp_1_sample;
-#endif
 extern int raw_temp_bed_sample;
 extern int target_temperature_bed;
 extern float current_temperature_bed;
@@ -91,13 +88,7 @@ FORCE_INLINE float degHotend(uint8_t extruder) {
 
 FORCE_INLINE int rawBedSample() {
   return raw_temp_bed_sample;
-};
-
-#ifdef FSR_TEMP_SENSOR_1
-  FORCE_INLINE int rawTemp1Sample() {
-    return raw_temp_1_sample;
-  };
-#endif
+}
 
 FORCE_INLINE float degBed() {
   return current_temperature_bed;

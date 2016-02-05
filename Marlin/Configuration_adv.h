@@ -424,15 +424,6 @@ const unsigned int dropsegments=5; //everything with less than this number of st
 //===========================================================================
 //=============================  Define Defines  ============================
 //===========================================================================
-#ifdef FSR_TEMP_SENSOR_1
-  #if EXTRUDERS > 1
-    #error "You cannot have more than one Extruder and FSRs connected to thermistor 1 input at the same time."
-  #else
-    #undef EXTRUDERS
-    #define EXTRUDERS 2
-  #endif
-#endif
-
 #if EXTRUDERS > 1 && defined TEMP_SENSOR_1_AS_REDUNDANT
   #error "You cannot use TEMP_SENSOR_1_AS_REDUNDANT if EXTRUDERS > 1"
 #endif
