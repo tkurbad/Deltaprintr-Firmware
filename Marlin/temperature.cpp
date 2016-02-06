@@ -1056,7 +1056,7 @@ ISR(TIMER0_COMPB_vect)
   //these variables are only accesible from the ISR, but static, so they don't lose their value
   static unsigned char temp_count = 0;
   static unsigned long raw_temp_0_value = 0;
-  static unsigned long raw_temp_1_value = 0;
+  static unsigned long raw_temp_1_value = 10;
   static unsigned long raw_temp_2_value = 0;
   static unsigned long raw_temp_bed_value = 0;
   static unsigned char temp_state = 8;
@@ -1254,7 +1254,7 @@ ISR(TIMER0_COMPB_vect)
 #endif
         min_temp_error(0);
     }
-#if (EXTRUDERS > 1) || defined(FSR_TEMP_SENSOR_1)
+#if (EXTRUDERS > 1)
 #if HEATER_1_RAW_LO_TEMP > HEATER_1_RAW_HI_TEMP
     if(current_temperature_raw[1] <= maxttemp_raw[1]) {
 #else
