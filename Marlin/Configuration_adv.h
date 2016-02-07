@@ -4,7 +4,14 @@
 //===========================================================================
 //=============================Thermal Settings  ============================
 //===========================================================================
+
+// FSR measuring through thermistor input 1 must only be enabled in
+// conjunction with FSR_BED_LEVELING and only for MOTHERBOARD == 67
+// (Deltaprintr).
 #if defined(FSR_TEMP_SENSOR_1) && !defined(FSR_BED_LEVELING)
+  #undef FSR_TEMP_SENSOR_1
+#endif
+#if defined(FSR_TEMP_SENSOR_1) && (MOTHERBOARD != 67)
   #undef FSR_TEMP_SENSOR_1
 #endif
 
@@ -12,11 +19,23 @@
   #error "You cannot have more than one Extruder and FSRs connected to thermistor 1 input at the same time."
 #endif
 
+// Rise the Number of extruders we want to watch the temperature of
+#ifdef FSR_TEMP_SENSOR_1
+  #define WATCH_EXTRUDERS 2
+#else
+  #define WATCH_EXTRUDERS 1
+#endif
+
 // Sanitize BED_MAXTEMP
 #if (BED_MAXTEMP > 150) && defined(FSR_TEMP_SENSOR_1)
   #warning "BED_MAXTEMP too high for heated bed. Resetting to 130."
   #undef BED_MAXTEMP
   #define BED_MAXTEMP 130
+#endif
+#if (BED_MAXTEMP < 1000) && !defined(FSR_TEMP_SENSOR_1)
+  #warning "BED_MAXTEMP too low for FSR bed leveling. Resetting to 2000."
+  #undef BED_MAXTEMP
+  #define BED_MAXTEMP 2000
 #endif
 
 #ifdef BED_LIMIT_SWITCHING
