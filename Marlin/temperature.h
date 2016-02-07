@@ -34,10 +34,10 @@ void manage_heater(); //it is critical that this is called periodically.
 
 // low level conversion routines
 // do not use these routines and variables outside of temperature.cpp
-extern int target_temperature[EXTRUDERS];  
-extern float current_temperature[EXTRUDERS];
+extern int target_temperature[WATCH_EXTRUDERS];
+extern float current_temperature[WATCH_EXTRUDERS];
 #ifdef SHOW_TEMP_ADC_VALUES
-  extern int current_temperature_raw[EXTRUDERS];
+  extern int current_temperature_raw[WATCH_EXTRUDERS];
   extern int current_temperature_bed_raw;
 #endif
 #ifdef FSR_TEMP_SENSOR_1
@@ -141,6 +141,12 @@ FORCE_INLINE bool isCoolingBed() {
 #define isHeatingHotend0() isHeatingHotend(0)
 #define isCoolingHotend0() isCoolingHotend(0)
 #if EXTRUDERS > 1
+#define degHotend1() degHotend(1)
+#define degTargetHotend1() degTargetHotend(1)
+#define setTargetHotend1(_celsius) setTargetHotend((_celsius), 1)
+#define isHeatingHotend1() isHeatingHotend(1)
+#define isCoolingHotend1() isCoolingHotend(1)
+#elif WATCH_EXTRUDERS > 1
 #define degHotend1() degHotend(1)
 #define degTargetHotend1() degTargetHotend(1)
 #define setTargetHotend1(_celsius) setTargetHotend((_celsius), 1)
