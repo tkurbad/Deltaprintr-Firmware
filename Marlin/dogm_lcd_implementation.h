@@ -34,10 +34,16 @@
 #endif
 
 #include <U8glib.h>
-#include "DOGMbitmaps.h"
 #include "dogm_font_data_marlin.h"
 #include "ultralcd.h"
 #include "ultralcd_st7920_u8glib_rrd.h"
+#ifdef FSR_TEMP_SENSOR_1
+  #include "DOGMbitmaps_fsr.h"
+  #define DRAW_EXTRUDER_1_X 13
+#else
+  #include "DOGMbitmaps.h"
+  #define DRAW_EXTRUDER_1_X 21
+#endif
 
 
 /* Russian language not supported yet, needs custom font
@@ -210,20 +216,20 @@ static void lcd_implementation_status_screen()
 			lcd_printPGM(PSTR("--:--"));
 		 }
  #endif
- 
+
  // Extruder 1
  u8g.setFont(FONT_STATUSMENU);
- u8g.setPrintPos(12,6);
+ u8g.setPrintPos(DRAW_EXTRUDER_1_X, 6);
  u8g.print(itostr3(int(degTargetHotend(0) + 0.5)));
  lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- u8g.setPrintPos(12,27);
+ u8g.setPrintPos(DRAW_EXTRUDER_1_X, 27);
  u8g.print(itostr3(int(degHotend(0) + 0.5)));
  lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- if (!isHeatingHotend(0)) u8g.drawBox(20,17,2,2);
+ if (!isHeatingHotend(0)) u8g.drawBox((DRAW_EXTRUDER_1_X + 8),17,2,2);
 	else
 		{
 		 u8g.setColorIndex(0);	// white on black
-		 u8g.drawBox(20,17,2,2);
+		 u8g.drawBox((DRAW_EXTRUDER_1_X + 8),17,2,2);
 		 u8g.setColorIndex(1);	// black on white
 		}
  
