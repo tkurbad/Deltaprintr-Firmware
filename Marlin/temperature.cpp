@@ -37,16 +37,19 @@
 //===========================================================================
 //=============================public variables============================
 //===========================================================================
-int target_temperature[EXTRUDERS] = { 0 };
+int target_temperature[WATCH_EXTRUDERS] = { 0 };
 int target_temperature_bed = 0;
-int current_temperature_raw[EXTRUDERS] = { 0 };
-float current_temperature[EXTRUDERS] = { 0.0 };
+int current_temperature_raw[WATCH_EXTRUDERS] = { 0 };
+float current_temperature[WATCH_EXTRUDERS] = { 0.0 };
 int current_temperature_bed_raw = 0;
 int raw_temp_bed_sample = 0;
 float current_temperature_bed = 0.0;
 #ifdef TEMP_SENSOR_1_AS_REDUNDANT
   int redundant_temperature_raw = 0;
   float redundant_temperature = 0.0;
+#endif
+#ifdef FSR_TEMP_SENSOR_1
+  int raw_temp_1_sample = 0;
 #endif
 #ifdef PIDTEMP
   float Kp=DEFAULT_Kp;
@@ -122,17 +125,17 @@ static volatile bool temp_meas_ready = false;
   # error Unsupported number of extruders
 #elif EXTRUDERS > 2
   # define ARRAY_BY_EXTRUDERS(v1, v2, v3) { v1, v2, v3 }
-#elif EXTRUDERS > 1
+#elif (EXTRUDERS > 1) || (WATCH_EXTRUDERS > 1)
   # define ARRAY_BY_EXTRUDERS(v1, v2, v3) { v1, v2 }
 #else
   # define ARRAY_BY_EXTRUDERS(v1, v2, v3) { v1 }
 #endif
 
 // Init min and max temp with extreme values to prevent false errors during startup
-static int minttemp_raw[EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_RAW_LO_TEMP , HEATER_1_RAW_LO_TEMP , HEATER_2_RAW_LO_TEMP );
-static int maxttemp_raw[EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_RAW_HI_TEMP , HEATER_1_RAW_HI_TEMP , HEATER_2_RAW_HI_TEMP );
-static int minttemp[EXTRUDERS] = ARRAY_BY_EXTRUDERS( 0, 0, 0 );
-static int maxttemp[EXTRUDERS] = ARRAY_BY_EXTRUDERS( 16383, 16383, 16383 );
+static int minttemp_raw[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_RAW_LO_TEMP , HEATER_1_RAW_LO_TEMP , HEATER_2_RAW_LO_TEMP );
+static int maxttemp_raw[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_RAW_HI_TEMP , HEATER_1_RAW_HI_TEMP , HEATER_2_RAW_HI_TEMP );
+static int minttemp[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( 0, 0, 0 );
+static int maxttemp[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( 16383, 16383, 16383 );
 //static int bed_minttemp_raw = HEATER_BED_RAW_LO_TEMP; /* No bed mintemp error implemented?!? */
 #ifdef BED_MAXTEMP
 static int bed_maxttemp_raw = HEATER_BED_RAW_HI_TEMP;
@@ -142,8 +145,8 @@ static int bed_maxttemp_raw = HEATER_BED_RAW_HI_TEMP;
   static void *heater_ttbl_map[2] = {(void *)HEATER_0_TEMPTABLE, (void *)HEATER_1_TEMPTABLE };
   static uint8_t heater_ttbllen_map[2] = { HEATER_0_TEMPTABLE_LEN, HEATER_1_TEMPTABLE_LEN };
 #else
-  static void *heater_ttbl_map[EXTRUDERS] = ARRAY_BY_EXTRUDERS( (void *)HEATER_0_TEMPTABLE, (void *)HEATER_1_TEMPTABLE, (void *)HEATER_2_TEMPTABLE );
-  static uint8_t heater_ttbllen_map[EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_TEMPTABLE_LEN, HEATER_1_TEMPTABLE_LEN, HEATER_2_TEMPTABLE_LEN );
+  static void *heater_ttbl_map[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( (void *)HEATER_0_TEMPTABLE, (void *)HEATER_1_TEMPTABLE, (void *)HEATER_2_TEMPTABLE );
+  static uint8_t heater_ttbllen_map[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_TEMPTABLE_LEN, HEATER_1_TEMPTABLE_LEN, HEATER_2_TEMPTABLE_LEN );
 #endif
 
 static float analog2temp(int raw, uint8_t e);
@@ -151,8 +154,8 @@ static float analog2tempBed(int raw);
 static void updateTemperaturesFromRawValues();
 
 #ifdef WATCH_TEMP_PERIOD
-int watch_start_temp[EXTRUDERS] = ARRAY_BY_EXTRUDERS(0,0,0);
-unsigned long watchmillis[EXTRUDERS] = ARRAY_BY_EXTRUDERS(0,0,0);
+int watch_start_temp[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS(0,0,0);
+unsigned long watchmillis[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS(0,0,0);
 #endif //WATCH_TEMP_PERIOD
 
 #ifndef SOFT_PWM_SCALE
@@ -615,7 +618,7 @@ void manage_heater()
 // Derived from RepRap FiveD extruder::getTemperature()
 // For hot end temperature measurement.
 static float analog2temp(int raw, uint8_t e) {
-#ifdef TEMP_SENSOR_1_AS_REDUNDANT
+#if defined(TEMP_SENSOR_1_AS_REDUNDANT) || defined(FSR_TEMP_SENSOR_1)
   if(e > EXTRUDERS)
 #else
   if(e >= EXTRUDERS)
@@ -693,7 +696,7 @@ static float analog2tempBed(int raw) {
     and this function is called from normal context as it is too slow to run in interrupts and will block the stepper routine otherwise */
 static void updateTemperaturesFromRawValues()
 {
-    for(uint8_t e=0;e<EXTRUDERS;e++)
+    for(uint8_t e=0;e<WATCH_EXTRUDERS;e++)
     {
         current_temperature[e] = analog2temp(current_temperature_raw[e], e);
     }
@@ -701,6 +704,7 @@ static void updateTemperaturesFromRawValues()
     #ifdef TEMP_SENSOR_1_AS_REDUNDANT
       redundant_temperature = analog2temp(redundant_temperature_raw, 1);
     #endif
+
     //Reset the watchdog after we know we have a temperature measurement.
     watchdog_reset();
 
@@ -843,7 +847,7 @@ void tp_init()
 #endif
   }
 #endif // MINTEMP 1
-#if (EXTRUDERS > 1) && defined(HEATER_1_MAXTEMP)
+#if ((EXTRUDERS > 1) || (WATCH_EXTRUDERS > 1)) && defined(HEATER_1_MAXTEMP)
   maxttemp[1] = HEATER_1_MAXTEMP;
   while(analog2temp(maxttemp_raw[1], 1) > HEATER_1_MAXTEMP) {
 #if HEATER_1_RAW_LO_TEMP < HEATER_1_RAW_HI_TEMP
@@ -1053,13 +1057,13 @@ ISR(TIMER0_COMPB_vect)
   //these variables are only accesible from the ISR, but static, so they don't lose their value
   static unsigned char temp_count = 0;
   static unsigned long raw_temp_0_value = 0;
-  static unsigned long raw_temp_1_value = 0;
+  static unsigned long raw_temp_1_value = 10;
   static unsigned long raw_temp_2_value = 0;
   static unsigned long raw_temp_bed_value = 0;
   static unsigned char temp_state = 8;
   static unsigned char pwm_count = (1 << SOFT_PWM_SCALE);
   static unsigned char soft_pwm_0;
-  #if (EXTRUDERS > 1) || defined(HEATERS_PARALLEL)
+  #if (EXTRUDERS > 1) || (WATCH_EXTRUDERS > 1) || defined(HEATERS_PARALLEL)
   static unsigned char soft_pwm_1;
   #endif
   #if EXTRUDERS > 2
@@ -1078,9 +1082,11 @@ ISR(TIMER0_COMPB_vect)
       #endif
     } else WRITE(HEATER_0_PIN,0);
 	
-    #if EXTRUDERS > 1
+    #if (EXTRUDERS > 1) || defined(FSR_TEMP_SENSOR_1)
     soft_pwm_1 = soft_pwm[1];
-    if(soft_pwm_1 > 0) WRITE(HEATER_1_PIN,1); else WRITE(HEATER_1_PIN,0);
+    #ifndef FSR_TEMP_SENSOR_1
+      if(soft_pwm_1 > 0) WRITE(HEATER_1_PIN,1); else WRITE(HEATER_1_PIN,0);
+    #endif
     #endif
     #if EXTRUDERS > 2
     soft_pwm_2 = soft_pwm[2];
@@ -1116,7 +1122,7 @@ ISR(TIMER0_COMPB_vect)
   
   pwm_count += (1 << SOFT_PWM_SCALE);
   pwm_count &= 0x7f;
-  
+
   switch(temp_state) {
     case 0: // Prepare TEMP_0
       #if defined(TEMP_0_PIN) && (TEMP_0_PIN > -1)
@@ -1213,7 +1219,7 @@ ISR(TIMER0_COMPB_vect)
     if (!temp_meas_ready) //Only update the raw values if they have been read. Else we could be updating them during reading.
     {
       current_temperature_raw[0] = raw_temp_0_value;
-#if EXTRUDERS > 1
+#if (EXTRUDERS > 1) || defined(FSR_TEMP_SENSOR_1)
       current_temperature_raw[1] = raw_temp_1_value;
 #endif
 #ifdef TEMP_SENSOR_1_AS_REDUNDANT
@@ -1246,7 +1252,7 @@ ISR(TIMER0_COMPB_vect)
 #endif
         min_temp_error(0);
     }
-#if EXTRUDERS > 1
+#if (EXTRUDERS > 1)
 #if HEATER_1_RAW_LO_TEMP > HEATER_1_RAW_HI_TEMP
     if(current_temperature_raw[1] <= maxttemp_raw[1]) {
 #else
@@ -1337,5 +1343,3 @@ float unscalePID_d(float d)
 }
 
 #endif //PIDTEMP
-
-
