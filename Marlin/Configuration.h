@@ -26,12 +26,12 @@
 // INPUT (the default), uncomment the following include statement and comment
 // the next one.
 //
-//#include "dp_config/fsr_bed/Configuration.h"
+//#include "Configuration_fsr_bed.h"
 
 // For automatic bed levelling with FSRs connected to the THERMISTOR INPUT
 // OF THE SECOND HOTEND (labeled '???' on the motherboard), comment the
 // above include statement and uncomment the following.
 //
-#include "dp_config/fsr_temp1/Configuration.h"
+#include "Configuration_fsr_temp1.h"
 
 #endif //__CONFIGURATION_BASIC_H
