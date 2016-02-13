@@ -19,6 +19,9 @@ int absPreheatHotendTemp;
 int absPreheatHPBTemp;
 int absPreheatFanSpeed;
 
+int carbonPreheatHotendTemp;
+int carbonPreheatHPBTemp;
+int carbonPreheatFanSpeed;
 
 #ifdef ULTIPANEL
 static float manual_feedrate[] = MANUAL_FEEDRATE;
@@ -55,6 +58,7 @@ static void lcd_control_menu();
 static void lcd_control_temperature_menu();
 static void lcd_control_temperature_preheat_pla_settings_menu();
 static void lcd_control_temperature_preheat_abs_settings_menu();
+static void lcd_control_temperature_preheat_carbon_settings_menu();
 static void lcd_control_motion_menu();
 #ifdef DOGLCD
 static void lcd_set_contrast();
@@ -327,6 +331,17 @@ void lcd_preheat_abs()
     setWatch(); // heater sanity check timer
 }
 
+void lcd_preheat_carbon()
+{
+    setTargetHotend0(carbonPreheatHotendTemp);
+    setTargetHotend1(carbonPreheatHotendTemp);
+    setTargetHotend2(carbonPreheatHotendTemp);
+    setTargetBed(carbonPreheatHPBTemp);
+    fanSpeed = carbonPreheatFanSpeed;
+    lcd_return_to_status();
+    setWatch(); // heater sanity check timer
+}
+
 static void lcd_cooldown()
 {
     setTargetHotend0(0);
@@ -443,6 +458,7 @@ static void lcd_prepare_menu()
     //MENU_ITEM(gcode, MSG_SET_ORIGIN, PSTR("G92 X0 Y0 Z0"));
     MENU_ITEM(function, MSG_PREHEAT_PLA, lcd_preheat_pla);
     MENU_ITEM(function, MSG_PREHEAT_ABS, lcd_preheat_abs);
+    MENU_ITEM(function, MSG_PREHEAT_CARBON, lcd_preheat_carbon);
     MENU_ITEM(function, MSG_COOLDOWN, lcd_cooldown);
 #if PS_ON_PIN > -1
     if (powersupply)
@@ -675,6 +691,7 @@ static void lcd_control_temperature_menu()
 #endif//PIDTEMP
     MENU_ITEM(submenu, MSG_PREHEAT_PLA_SETTINGS, lcd_control_temperature_preheat_pla_settings_menu);
     MENU_ITEM(submenu, MSG_PREHEAT_ABS_SETTINGS, lcd_control_temperature_preheat_abs_settings_menu);
+    MENU_ITEM(submenu, MSG_PREHEAT_CARBON_SETTINGS, lcd_control_temperature_preheat_carbon_settings_menu);
     END_MENU();
 }
 
@@ -701,6 +718,21 @@ static void lcd_control_temperature_preheat_abs_settings_menu()
     MENU_ITEM_EDIT(int3, MSG_NOZZLE, &absPreheatHotendTemp, 0, HEATER_0_MAXTEMP - 15);
 #if TEMP_SENSOR_BED != 0
     MENU_ITEM_EDIT(int3, MSG_BED, &absPreheatHPBTemp, 0, BED_MAXTEMP - 15);
+#endif
+#ifdef EEPROM_SETTINGS
+    MENU_ITEM(function, MSG_STORE_EPROM, Config_StoreSettings);
+#endif
+    END_MENU();
+}
+
+static void lcd_control_temperature_preheat_carbon_settings_menu()
+{
+    START_MENU();
+    MENU_ITEM(back, MSG_TEMPERATURE, lcd_control_temperature_menu);
+    MENU_ITEM_EDIT(int3, MSG_FAN_SPEED, &carbonPreheatFanSpeed, 0, 255);
+    MENU_ITEM_EDIT(int3, MSG_NOZZLE, &carbonPreheatHotendTemp, 0, HEATER_0_MAXTEMP - 15);
+#if TEMP_SENSOR_BED != 0
+    MENU_ITEM_EDIT(int3, MSG_BED, &carbonPreheatHPBTemp, 0, BED_MAXTEMP - 15);
 #endif
 #ifdef EEPROM_SETTINGS
     MENU_ITEM(function, MSG_STORE_EPROM, Config_StoreSettings);

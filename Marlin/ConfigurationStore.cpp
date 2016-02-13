@@ -62,6 +62,7 @@ void Config_StoreSettings()
   #ifndef ULTIPANEL
   int plaPreheatHotendTemp = PLA_PREHEAT_HOTEND_TEMP, plaPreheatHPBTemp = PLA_PREHEAT_HPB_TEMP, plaPreheatFanSpeed = PLA_PREHEAT_FAN_SPEED;
   int absPreheatHotendTemp = ABS_PREHEAT_HOTEND_TEMP, absPreheatHPBTemp = ABS_PREHEAT_HPB_TEMP, absPreheatFanSpeed = ABS_PREHEAT_FAN_SPEED;
+  int carbonPreheatHotendTemp = CARBON_PREHEAT_HOTEND_TEMP, carbonPreheatHPBTemp = CARBON_PREHEAT_HPB_TEMP, carbonPreheatFanSpeed = CARBON_PREHEAT_FAN_SPEED;
   #endif
   EEPROM_WRITE_VAR(i,plaPreheatHotendTemp);
   EEPROM_WRITE_VAR(i,plaPreheatHPBTemp);
@@ -69,6 +70,9 @@ void Config_StoreSettings()
   EEPROM_WRITE_VAR(i,absPreheatHotendTemp);
   EEPROM_WRITE_VAR(i,absPreheatHPBTemp);
   EEPROM_WRITE_VAR(i,absPreheatFanSpeed);
+  EEPROM_WRITE_VAR(i,carbonPreheatHotendTemp);
+  EEPROM_WRITE_VAR(i,carbonPreheatHPBTemp);
+  EEPROM_WRITE_VAR(i,carbonPreheatFanSpeed);
   EEPROM_WRITE_VAR(i,zprobe_zoffset);
   #ifdef PIDTEMP
     EEPROM_WRITE_VAR(i,Kp);
@@ -203,6 +207,7 @@ void Config_RetrieveSettings()
         #ifndef ULTIPANEL
         int plaPreheatHotendTemp, plaPreheatHPBTemp, plaPreheatFanSpeed;
         int absPreheatHotendTemp, absPreheatHPBTemp, absPreheatFanSpeed;
+        int carbonPreheatHotendTemp, carbonPreheatHPBTemp, carbonPreheatFanSpeed;
         #endif
         EEPROM_READ_VAR(i,plaPreheatHotendTemp);
         EEPROM_READ_VAR(i,plaPreheatHPBTemp);
@@ -210,6 +215,9 @@ void Config_RetrieveSettings()
         EEPROM_READ_VAR(i,absPreheatHotendTemp);
         EEPROM_READ_VAR(i,absPreheatHPBTemp);
         EEPROM_READ_VAR(i,absPreheatFanSpeed);
+        EEPROM_READ_VAR(i,carbonPreheatHotendTemp);
+        EEPROM_READ_VAR(i,carbonPreheatHPBTemp);
+        EEPROM_READ_VAR(i,carbonPreheatFanSpeed);
         EEPROM_READ_VAR(i,zprobe_zoffset);
         #ifndef PIDTEMP
         float Kp,Ki,Kd;
@@ -273,6 +281,9 @@ void Config_ResetDefault()
     absPreheatHotendTemp = ABS_PREHEAT_HOTEND_TEMP;
     absPreheatHPBTemp = ABS_PREHEAT_HPB_TEMP;
     absPreheatFanSpeed = ABS_PREHEAT_FAN_SPEED;
+    carbonPreheatHotendTemp = CARBON_PREHEAT_HOTEND_TEMP;
+    carbonPreheatHPBTemp = CARBON_PREHEAT_HPB_TEMP;
+    carbonPreheatFanSpeed = CARBON_PREHEAT_FAN_SPEED;
 #endif
 #ifdef ENABLE_AUTO_BED_LEVELING
     zprobe_zoffset = -Z_PROBE_OFFSET_FROM_EXTRUDER;

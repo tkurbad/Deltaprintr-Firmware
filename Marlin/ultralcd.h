@@ -42,7 +42,11 @@
   extern int absPreheatHotendTemp;
   extern int absPreheatHPBTemp;
   extern int absPreheatFanSpeed;
-    
+
+  extern int carbonPreheatHotendTemp;
+  extern int carbonPreheatHPBTemp;
+  extern int carbonPreheatFanSpeed;
+
   void lcd_buzz(long duration,uint16_t freq);
   bool lcd_clicked();
 
