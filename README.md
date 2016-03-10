@@ -59,3 +59,9 @@ Sketch uses 123,110 bytes (48%) of program storage space. Maximum is 253,952 byt
 Global variables use 6,001 bytes (73%) of dynamic memory, leaving 2,191 bytes for local variables. Maximum is 8,192 bytes.
 ```
 - If everything worked well, you can choose *Sketch* &rarr; *Upload* to upload the firmware to your printer.
+
+Further reading
+===============
+
+- [PID autotuning guide for bed and hotends]http://reprap.org/wiki/PID_Tuning
+- [Azteeg X3 specifications]http://reprap.org/wiki/Azteeg_X3
