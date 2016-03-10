@@ -136,7 +136,9 @@ static int minttemp_raw[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_RAW_LO_T
 static int maxttemp_raw[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_RAW_HI_TEMP , HEATER_1_RAW_HI_TEMP , HEATER_2_RAW_HI_TEMP );
 static int minttemp[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( 0, 0, 0 );
 static int maxttemp[WATCH_EXTRUDERS] = ARRAY_BY_EXTRUDERS( 16383, 16383, 16383 );
-//static int bed_minttemp_raw = HEATER_BED_RAW_LO_TEMP; /* No bed mintemp error implemented?!? */
+#ifdef BED_MINTEMP
+static int bed_mintemp_raw = HEATER_BED_RAW_LO_TEMP;
+#endif
 #ifdef BED_MAXTEMP
 static int bed_maxttemp_raw = HEATER_BED_RAW_HI_TEMP;
 #endif
@@ -880,15 +882,14 @@ void tp_init()
 #endif //MAXTEMP 2
 
 #ifdef BED_MINTEMP
-  /* No bed MINTEMP error implemented?!? */ /*
-  while(analog2tempBed(bed_minttemp_raw) < BED_MINTEMP) {
+  while(analog2tempBed(bed_mintemp_raw) < BED_MINTEMP) {
 #if HEATER_BED_RAW_LO_TEMP < HEATER_BED_RAW_HI_TEMP
-    bed_minttemp_raw += OVERSAMPLENR;
+    bed_mintemp_raw += OVERSAMPLENR;
 #else
-    bed_minttemp_raw -= OVERSAMPLENR;
+    bed_mintemp_raw -= OVERSAMPLENR;
 #endif
   }
-  */
+
 #endif //BED_MINTEMP
 #ifdef BED_MAXTEMP
   while(analog2tempBed(bed_maxttemp_raw) > BED_MAXTEMP) {
@@ -988,6 +989,20 @@ void bed_max_temp_error(void) {
     SERIAL_ERROR_START;
     SERIAL_ERRORLNPGM("Temperature heated bed switched off. MAXTEMP triggered !!");
     LCD_ALERTMESSAGEPGM("Err: MAXTEMP BED");
+  }
+  #ifndef BOGUS_TEMPERATURE_FAILSAFE_OVERRIDE
+  Stop();
+  #endif
+}
+
+void bed_min_temp_error(void) {
+#if HEATER_BED_PIN > -1
+  WRITE(HEATER_BED_PIN, 0);
+#endif
+  if(IsStopped() == false) {
+    SERIAL_ERROR_START;
+    SERIAL_ERRORLNPGM("Temperature heated bed switched off. MINTEMP triggered !!");
+    LCD_ALERTMESSAGEPGM("Err: MINTEMP BED");
   }
   #ifndef BOGUS_TEMPERATURE_FAILSAFE_OVERRIDE
   Stop();
@@ -1288,7 +1303,6 @@ ISR(TIMER0_COMPB_vect)
     }
 #endif
   
-  /* No bed MINTEMP error? */
 #if defined(BED_MAXTEMP) && (TEMP_SENSOR_BED != 0)
 # if HEATER_BED_RAW_LO_TEMP > HEATER_BED_RAW_HI_TEMP
     if(current_temperature_bed_raw <= bed_maxttemp_raw) {
@@ -1297,6 +1311,17 @@ ISR(TIMER0_COMPB_vect)
 #endif
        target_temperature_bed = 0;
        bed_max_temp_error();
+    }
+#endif
+
+#if defined(BED_MINTEMP) && (TEMP_SENSOR_BED != 0)
+# if HEATER_BED_RAW_LO_TEMP > HEATER_BED_RAW_HI_TEMP
+    if(current_temperature_bed_raw >= bed_mintemp_raw) {
+#else
+    if(current_temperature_bed_raw <= bed_mintemp_raw) {
+#endif
+       target_temperature_bed = 0;
+       bed_min_temp_error();
     }
 #endif
   }

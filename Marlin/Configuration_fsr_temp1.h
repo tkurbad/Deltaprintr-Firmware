@@ -175,7 +175,7 @@
 #define TEMP_SENSOR_0 5
 #define TEMP_SENSOR_1 5
 #define TEMP_SENSOR_2 0
-#define TEMP_SENSOR_BED 11
+#define TEMP_SENSOR_BED 5
 
 // This makes temp sensor 1 a redundant sensor for sensor 0. If the temperatures difference between these sensors is to high the print will be aborted.
 //#define TEMP_SENSOR_1_AS_REDUNDANT
@@ -192,6 +192,9 @@
 #define HEATER_0_MINTEMP 5
 #define HEATER_1_MINTEMP 5
 #define HEATER_2_MINTEMP 5
+
+// Only set BED_MINTEMP if you really _have_ heated bed. Otherwise
+// 'MINTEMP BED' error will be triggered as soon as you start to print.
 #define BED_MINTEMP 5
 
 // When temperature exceeds max temp, your heater will be switched off.
