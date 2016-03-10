@@ -22,6 +22,7 @@ emerge -NDuv dev-embedded/avrdude
 - ~~Download the TeensyDuino Linux Installer (64 bit) from https://www.pjrc.com/teensy/td_download.html~~
 - ~~Download the Teensy udev rules from https://www.pjrc.com/teensy/49-teensy.rules~~
 - ~~As user `root`, copy the udev rules to `/etc/udev/rules.d/`:~~
+
 <del><pre>sudo cp 49-teensy.rules /etc/udev/rules.d/</pre></del>
 - Create a working directory and untar `arduino-1.6.7.tar.xz`:
 ```
