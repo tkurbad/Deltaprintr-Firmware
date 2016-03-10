@@ -8,11 +8,12 @@ This firmware includes all patches and fixes collected and created by user [john
 Thank you for the good work, John.
 
 I added some fixes to make it compile with [Arduino IDE 1.6+](https://www.arduino.cc) and the newest [u8glib](https://github.com/olikraus/u8glib).
+In addition, I did some code cleanup and several cosmetic changes, e.g. for the LCD display.
 
-The **main difference** between this fork and the original Deltaprintr firmware is that it supports having a
-[heated bed](http://???). This is accomplished by moving the FSR sensors to the (unused) thermistor input of the
-second hotend/extruder to free up all the bed ciruitry on the Azteeg X3L mainboard.
-It also incorporates some code cleanup and several cosmetic changes, e.g. for the LCD display.
+Aside from that, the **main difference** between this fork and the original Deltaprintr firmware is that it
+supports having a [heated bed](http://???). This is accomplished by moving the FSR sensors to the (unused)
+thermistor input of the second hotend/extruder. This way, all the heatbed ciruitry on the Azteeg X3L mainboard
+is made available for its original purpose.
 
 Have a look at `Marlin/Configuration.h` to learn about the (new) options you have.
 
