@@ -600,7 +600,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
  #if defined(DEFAULT_LCD_CONTRAST)
   #undef DEFAULT_LCD_CONTRAST
  #endif
- #define DEFAULT_LCD_CONTRAST 85
+ #define DEFAULT_LCD_CONTRAST 63 // Seems to be the highest value, new U8glib versions support
  #define ENCODER_PULSES_PER_STEP 2
  #define ENCODER_STEPS_PER_MENU_ITEM 1
 #endif
