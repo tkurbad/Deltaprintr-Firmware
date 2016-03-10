@@ -19,11 +19,11 @@ echo "dev-embedded/avrdude ftdi" >> /etc/portage/package.use/avrdude
 emerge -NDuv dev-embedded/avrdude
 ```
 - Download Arduino IDE 1.6.7 for Linux 64 bits from https://www.arduino.cc/en/Main/Software
-- Download the TeensyDuino Linux Installer (64 bit) from https://www.pjrc.com/teensy/td_download.html
-- Download the Teensy udev rules from https://www.pjrc.com/teensy/49-teensy.rules
-- As user `root`, copy the udev rules to `/etc/udev/rules.d/`:
+- ~Download the TeensyDuino Linux Installer (64 bit) from https://www.pjrc.com/teensy/td_download.html~
+- ~Download the Teensy udev rules from https://www.pjrc.com/teensy/49-teensy.rules~
+- ~As user `root`, copy the udev rules to `/etc/udev/rules.d/`:~
 ```
-sudo cp 49-teensy.rules /etc/udev/rules.d/
+~sudo cp 49-teensy.rules /etc/udev/rules.d/~
 ```
 - Create a working directory and untar `arduino-1.6.7.tar.xz`:
 ```
@@ -35,7 +35,7 @@ tar xpf arduino-1.6.7.tar.xz -C ~/projects/deltaprintr
 ln -sf /usr/bin/avrdude ~/projects/deltaprintr/arduino-1.6.7/hardware/tools/avr/bin/avrdude
 rm -f ~/projects/deltaprintr/arduino-1.6.7/hardware/tools/avr/bin/avrdude_bin
 ```
-- Launch the TeensyDuino installer (`teensyduino.64bit`) and choose `~/projects/deltaprintr/arduino-1.6.7` as installation directory.
+- ~Launch the TeensyDuino installer (`teensyduino.64bit`) and choose `~/projects/deltaprintr/arduino-1.6.7` as installation directory.~
 - Clone this repository:
 ```
 cd ~/projects/deltaprintr
@@ -53,7 +53,7 @@ cd ~/projects/deltaprintr/arduino-1.6.7
 - Add required libraries. In the Arduino IDE, choose *Sketch* &rarr; *Include library* &rarr; *Manage libraries*, 
 then click on *Time* &rarr; *Install* and *u8glib* &rarr; *Install*.
 - Choose *Sketch* &rarr; *Verify/Compile*.
-- There will be a compiler warning from `u8g_rot.c` that can be safely ignored (s. https://github.com/olikraus/u8glib/issues/366).
+- ~There will be a compiler warning from `u8g_rot.c` that can be safely ignored (s. https://github.com/olikraus/u8glib/issues/366).~
 The last two lines of the output should look similar to:
 ```
 Sketch uses 123,110 bytes (48%) of program storage space. Maximum is 253,952 bytes.
