@@ -63,5 +63,5 @@ Global variables use 6,001 bytes (73%) of dynamic memory, leaving 2,191 bytes fo
 Further reading
 ===============
 
-- [PID autotuning guide for bed and hotends](http://reprap.org/wiki/PID_Tuning)
-- [Azteeg X3 specifications](http://reprap.org/wiki/Azteeg_X3)
+- [PID autotuning guide for bed and hotends](http://reprap.org/wiki/PID_Tuning "http://reprap.org/wiki/PID_Tuning")
+- [Azteeg X3 specifications](http://reprap.org/wiki/Azteeg_X3 "http://reprap.org/wiki/Azteeg_X3")
