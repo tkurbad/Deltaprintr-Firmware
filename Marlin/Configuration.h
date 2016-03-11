@@ -6,7 +6,7 @@
 // Read the comments below to decide which one you want/need.
 
 //===========================================================================
-//==================== DeltaPrintr Configuration Choices ====================
+//==================== Deltaprintr Configuration Choices ====================
 //===========================================================================
 
 // The Deltaprintr comes with FSR sensors for automatic bed levelling.
