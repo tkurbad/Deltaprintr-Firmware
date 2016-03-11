@@ -195,7 +195,7 @@
 #define HEATER_0_MINTEMP 5
 #define HEATER_1_MINTEMP 5
 #define HEATER_2_MINTEMP 5
-#define BED_MINTEMP 5
+#define BED_MINTEMP -1
 
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
@@ -483,8 +483,8 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 #define MANUAL_Y_HOME_POS 0
 // #define MANUAL_Z_HOME_POS 338.0 // For delta: Distance between nozzle and print surface after homing.
                                 // Original Deltaprintr J-Head setting
-// #define MANUAL_Z_HOME_POS 317.8 // E3Dv6 all metal hotend setting
-#define MANUAL_Z_HOME_POS 302.4 // E3Dv6 all metal hotend + heated bed setting (standard FSR standoffs)
+#define MANUAL_Z_HOME_POS 317.8 // E3Dv6 all metal hotend setting
+//#define MANUAL_Z_HOME_POS 302.4 // E3Dv6 all metal hotend + heated bed setting (standard FSR standoffs)
 
 //// MOVEMENT SETTINGS
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
