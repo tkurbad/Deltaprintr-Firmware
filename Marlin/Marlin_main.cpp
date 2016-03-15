@@ -71,7 +71,7 @@ float fsr_moving_noise=0;      // Average noise/deviation for fsr while moving
 bool  FSR_TRIGGERED=false;     // triggered state
 float FSR_TRIGGER_THRESHOLD=1023; // threshold for triggering
 float FSR_RECOVERY_THRESHOLD=1023;// threshold for recovery
-float FSR_TRIGGER_ADJUST=20;  // At minimum, there should be an increase of 0.8 degrees to trigger, changeable
+float FSR_TRIGGER_ADJUST=7;  // At minimum, there should be an increase of 0.8 degrees to trigger, changeable
 float FSR_RECOVERY_ADJUST=8;   // value to bump up or down the threshold for recovery by.
 int   FSR_SAMPLES=5;          // Number of samples to take when calibration triggered.
 // #define FSR_CALIBRATE_EVERY_G29   // Uncomment this if you want a recalibration every G29
@@ -1130,6 +1130,11 @@ void fsr_calibration() {
   fsr_avg = ( fsr_values / fsr_tally );
   fsr_moving = fsr_avg;
   fsr_moving_noise = ( fsr_noise_avg + ( fsr_noise_max * 2 ) ) / 3.00; // Factor in the noise max level weighted toward max.
+
+  SERIAL_PROTOCOLPGM(" FSR Resting: ");
+  SERIAL_PROTOCOL(fsr_resting);
+  SERIAL_PROTOCOLPGM(" FSR Moving: ");
+  SERIAL_PROTOCOL(fsr_moving);
 
   fsr_recalculate();
 }
