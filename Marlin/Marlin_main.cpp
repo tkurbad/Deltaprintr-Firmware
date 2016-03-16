@@ -1092,11 +1092,11 @@ void fsr_calibration() {
     // old_feedrate = feedrate;
     feedrate = homing_feedrate[Z_AXIS]/10;
 
-    destination[Z_AXIS] = current_position[Z_AXIS] - 2;
+    destination[Z_AXIS] = current_position[Z_AXIS] - 4;
     prepare_move_raw();
     st_synchronize();
 
-    destination[Z_AXIS] = current_position[Z_AXIS] + 2;
+    destination[Z_AXIS] = current_position[Z_AXIS] + 4;
     prepare_move_raw();
     st_synchronize();
 
@@ -1740,9 +1740,11 @@ void process_commands()
       endstops_hit_on_purpose();
 
 #ifdef FSR_BED_LEVELING
+#ifndef FSR_CALIBRATE_EVERY_G29 // Don't calibrate here if it's done in G29 anyway
       delay(1500); // Need to wait for vibrations and ADC(s) to settle
       fsr_calibration(); // Let's calibrate then.
 #endif
+#endif // FSR_BED_LEVELING
       break;
 
 #ifdef ENABLE_AUTO_BED_LEVELING
