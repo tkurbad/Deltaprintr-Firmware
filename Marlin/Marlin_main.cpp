@@ -71,8 +71,8 @@ float fsr_moving_noise=0;      // Average noise/deviation for fsr while moving
 bool  FSR_TRIGGERED=false;     // triggered state
 float FSR_TRIGGER_THRESHOLD=1023; // threshold for triggering
 float FSR_RECOVERY_THRESHOLD=1023;// threshold for recovery
-float FSR_TRIGGER_ADJUST=5;  // At minimum, there should be an increase of 0.8 degrees to trigger, changeable
-float FSR_RECOVERY_ADJUST=3;   // value to bump up or down the threshold for recovery by.
+float FSR_TRIGGER_ADJUST=4.5;  // At minimum, there should be an increase of 0.8 degrees to trigger, changeable
+float FSR_RECOVERY_ADJUST=2.5;   // value to bump up or down the threshold for recovery by.
 int   FSR_SAMPLES=5;          // Number of samples to take when calibration triggered.
 #define FSR_CALIBRATE_EVERY_G29   // Uncomment this if you want a recalibration every G29
 #endif
@@ -1090,13 +1090,13 @@ void fsr_calibration() {
   for( fsr_idx=0; fsr_idx < FSR_SAMPLES ; fsr_idx++ ) {
 
     // old_feedrate = feedrate;
-    feedrate = homing_feedrate[Z_AXIS]/10;
+    feedrate = homing_feedrate[Z_AXIS]/5;
 
-    destination[Z_AXIS] = current_position[Z_AXIS] - 4;
+    destination[Z_AXIS] = current_position[Z_AXIS] - 3;
     prepare_move_raw();
     st_synchronize();
 
-    destination[Z_AXIS] = current_position[Z_AXIS] + 4;
+    destination[Z_AXIS] = current_position[Z_AXIS] + 3;
     prepare_move_raw();
     st_synchronize();
 
