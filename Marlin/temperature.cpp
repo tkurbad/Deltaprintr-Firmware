@@ -388,13 +388,20 @@ void checkExtruderAutoFans()
       fanState |= 1;
   #endif
   #if defined(EXTRUDER_1_AUTO_FAN_PIN) && EXTRUDER_1_AUTO_FAN_PIN > -1
-    if (current_temperature[1] > EXTRUDER_AUTO_FAN_TEMPERATURE) 
-    {
-      if (EXTRUDER_1_AUTO_FAN_PIN == EXTRUDER_0_AUTO_FAN_PIN) 
-        fanState |= 1;
-      else
+    #if defined(FSR_TEMP_SENSOR_1) && (EXTRUDER_0_AUTO_FAN_PIN != EXTRUDER_1_AUTO_FAN_PIN)
+      if (current_temperature[0] > EXTRUDER_AUTO_FAN_TEMPERATURE)
+      {
         fanState |= 2;
-    }
+      }
+    #else
+      if (current_temperature[1] > EXTRUDER_AUTO_FAN_TEMPERATURE)
+      {
+        if (EXTRUDER_1_AUTO_FAN_PIN == EXTRUDER_0_AUTO_FAN_PIN)
+          fanState |= 1;
+        else
+          fanState |= 2;
+      }
+    #endif // FSR_TEMP_SENSOR_1
   #endif
   #if defined(EXTRUDER_2_AUTO_FAN_PIN) && EXTRUDER_2_AUTO_FAN_PIN > -1
     if (current_temperature[2] > EXTRUDER_AUTO_FAN_TEMPERATURE) 
