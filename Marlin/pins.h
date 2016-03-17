@@ -542,7 +542,7 @@
   #endif
 
   #if MOTHERBOARD == 67 && TEMP_SENSOR_0 == 20 // Deltaprintr with E3Dv6 and PT100 Upgrade
-    #define TEMP_0_PIN         4    // ANALOG NUMBERING
+    #define TEMP_0_PIN         5    // ANALOG NUMBERING
   #else
     #define TEMP_0_PIN         13   // ANALOG NUMBERING
   #endif // Deltaprintr with PT100
