@@ -541,8 +541,12 @@
     #define HEATER_2_PIN       -1
   #endif
 
-  #define TEMP_0_PIN         13   // ANALOG NUMBERING
-  #define TEMP_1_PIN         15   // ANALOG NUMBERING
+  #if MOTHERBOARD == 67 && TEMP_SENSOR_0 == 20 // Deltaprintr with E3Dv6 and PT100 Upgrade
+    #define TEMP_0_PIN         4    // ANALOG NUMBERING
+  #else
+    #define TEMP_0_PIN         13   // ANALOG NUMBERING
+  #endif // Deltaprintr with PT100
+    #define TEMP_1_PIN         15   // ANALOG NUMBERING
   #if MOTHERBOARD == 68
     #define TEMP_2_PIN         12   // ANALOG NUMBERING
     #define TEMP_3_PIN         11   // ANALOG NUMBERING
