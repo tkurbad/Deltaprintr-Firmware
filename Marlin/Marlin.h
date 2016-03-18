@@ -244,5 +244,9 @@ extern void digipot_i2c_set_current( int channel, float current );
 extern void digipot_i2c_init();
 #endif
 
+#ifdef FSR_TEMP_SENSOR_1
+extern bool fsr_display_blank;
+extern bool fsr_display_enabled;
 #endif
 
+#endif

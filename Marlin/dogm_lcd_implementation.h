@@ -227,20 +227,30 @@ static void lcd_implementation_status_screen()
  u8g.setPrintPos(DRAW_EXTRUDER_1_X, 27);
  u8g.print(itostr3(int(degHotend(0) + 0.5)));
  lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
- if (!isHeatingHotend(0)) u8g.drawBox((DRAW_EXTRUDER_1_X + 8),17,2,2);
-	else
-		{
-		 u8g.setColorIndex(0);	// white on black
-		 u8g.drawBox((DRAW_EXTRUDER_1_X + 8),17,2,2);
-		 u8g.setColorIndex(1);	// black on white
-		}
+ if (!isHeatingHotend(0)) {
+    u8g.drawBox((DRAW_EXTRUDER_1_X + 8),17,2,2);
+ } else {
+    u8g.setColorIndex(0);	// white on black
+	u8g.drawBox((DRAW_EXTRUDER_1_X + 8),17,2,2);
+	u8g.setColorIndex(1);	// black on white
+ }
  
  // FSR board leveling sensors
  #ifdef FSR_TEMP_SENSOR_1
- u8g.setFont(FONT_STATUSMENU);
- u8g.setPrintPos(45,27);
- u8g.print(itostr3(int(degHotend(1) + 0.5)));
- lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+ if (fsr_display_enabled) {
+     u8g.setFont(FONT_STATUSMENU);
+     u8g.setPrintPos(45,27);
+     u8g.print(itostr3(int(degHotend(1) + 0.5)));
+     lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+ } else {
+     if (!fsr_display_blank) {
+        u8g.setFont(FONT_STATUSMENU);
+        u8g.setPrintPos(45,27);
+        lcd_printPGM(PSTR("---"));
+        lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+        fsr_display_blank = true;
+     }
+ }
  #endif
 
 /// Disabled because extra extruders removed from bitmap.

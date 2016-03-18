@@ -270,6 +270,10 @@ float delta[3] = {0.0, 0.0, 0.0};
 float bed_level[ACCURATE_BED_LEVELING_POINTS][ACCURATE_BED_LEVELING_POINTS];
 #endif
 
+#ifdef FSR_TEMP_SENSOR_1
+bool fsr_display_enabled;
+bool fsr_display_blank;
+#endif
 //===========================================================================
 //=============================private variables=============================
 //===========================================================================
@@ -505,6 +509,11 @@ void setup()
   st_init();    // Initialize stepper, this enables interrupts!
   setup_photpin();
   servo_init();
+
+  #ifdef FSR_TEMP_SENSOR_1
+    fsr_display_enabled = true;
+    fsr_display_blank = false;
+  #endif
 
   lcd_init();
   _delay_ms(1000);	// wait 1sec to display the splash screen
@@ -1527,6 +1536,12 @@ void process_commands()
       break;
       #endif //FWRETRACT
     case 28: //G28 Home all Axis one at a time
+
+#ifdef FSR_BED_LEVELING // Enable LCD display of FSR values
+      fsr_display_enabled = true;
+      fsr_display_blank = false;
+#endif
+
 #ifdef ENABLE_AUTO_BED_LEVELING
       plan_bed_level_matrix.set_to_identity();  //Reset the plane ("erase" all leveling data)
 #endif //ENABLE_AUTO_BED_LEVELING
@@ -1910,6 +1925,11 @@ void process_commands()
             current_position[Z_AXIS] = z_tmp - real_z + current_position[Z_AXIS];   //The difference is added to current position and sent to planner.
             plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
           #endif //NONLINEAR_BED_LEVELING
+
+          #ifdef FSR_BED_LEVELING // Switch off LCD display of FSR values after leveling
+            fsr_display_enabled = false;
+            fsr_display_blank = false;
+          #endif
         }
         break;
 
