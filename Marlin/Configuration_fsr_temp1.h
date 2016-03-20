@@ -198,7 +198,7 @@
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
 // You should use MINTEMP for thermistor short/failure protection.
-#define HEATER_0_MAXTEMP 285
+#define HEATER_0_MAXTEMP 380	// !!LOWER!! to <= 285 if you don't use a PT100
 #define HEATER_1_MAXTEMP 2000
 #define HEATER_2_MAXTEMP 285
 #define BED_MAXTEMP 130
@@ -235,9 +235,14 @@
 //    #define  DEFAULT_Kd 114
 
 // E3Dv6 All Metal Hotend
-    #define  DEFAULT_Kp 28.24
-    #define  DEFAULT_Ki 2.77
-    #define  DEFAULT_Kd 72.06
+//    #define  DEFAULT_Kp 28.24
+//    #define  DEFAULT_Ki 2.77
+//    #define  DEFAULT_Kd 72.06
+
+// E3Dv6 All Metal Hotend w/ PT100 Temperature Sensor
+    #define  DEFAULT_Kp 17.35
+    #define  DEFAULT_Ki 1.12
+    #define  DEFAULT_Kd 67.36
 
 // MakerGear
 //    #define  DEFAULT_Kp 7.0
