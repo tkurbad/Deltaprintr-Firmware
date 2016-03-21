@@ -1099,13 +1099,13 @@ void fsr_calibration() {
   for( fsr_idx=0; fsr_idx < FSR_SAMPLES ; fsr_idx++ ) {
 
     // old_feedrate = feedrate;
-    feedrate = homing_feedrate[Z_AXIS]/20;
+    feedrate = homing_feedrate[Z_AXIS]/10;
 
-    destination[Z_AXIS] = current_position[Z_AXIS] - 1;
+    destination[Z_AXIS] = current_position[Z_AXIS] - 2;
     prepare_move_raw();
     st_synchronize();
 
-    destination[Z_AXIS] = current_position[Z_AXIS] + 1;
+    destination[Z_AXIS] = current_position[Z_AXIS] + 2;
     prepare_move_raw();
     st_synchronize();
 
