@@ -951,7 +951,7 @@ static void run_z_probe() {
   #ifdef FSR_BED_LEVELING
     // Probing using the FSR on the bed thermistor readings
     // feedrate = 600; //mm/min
-    feedrate = 500; //mm/min   Note: Too fast and you will "hit" the bed hard and generate vibrations
+    feedrate = 250; //mm/min   Note: Too fast and you will "hit" the bed hard and generate vibrations
     float step = 0.05;
     int direction = -1;
     while (touching_print_surface()) {
@@ -1099,13 +1099,13 @@ void fsr_calibration() {
   for( fsr_idx=0; fsr_idx < FSR_SAMPLES ; fsr_idx++ ) {
 
     // old_feedrate = feedrate;
-    feedrate = homing_feedrate[Z_AXIS]/5;
+    feedrate = homing_feedrate[Z_AXIS]/20;
 
-    destination[Z_AXIS] = current_position[Z_AXIS] - 3;
+    destination[Z_AXIS] = current_position[Z_AXIS] - 1;
     prepare_move_raw();
     st_synchronize();
 
-    destination[Z_AXIS] = current_position[Z_AXIS] + 3;
+    destination[Z_AXIS] = current_position[Z_AXIS] + 1;
     prepare_move_raw();
     st_synchronize();
 
