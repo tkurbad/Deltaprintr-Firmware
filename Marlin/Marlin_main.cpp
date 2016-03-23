@@ -1140,12 +1140,6 @@ void fsr_calibration() {
   fsr_moving = fsr_avg;
   fsr_moving_noise = ( fsr_noise_avg + ( fsr_noise_max * 2 ) ) / 3.00; // Factor in the noise max level weighted toward max.
 
-  SERIAL_PROTOCOLPGM("FSR Resting: ");
-  SERIAL_PROTOCOL(fsr_resting);
-  SERIAL_PROTOCOLPGM(" FSR Moving: ");
-  SERIAL_PROTOCOL(fsr_moving);
-  SERIAL_PROTOCOLPGM("\n");
-
   fsr_recalculate();
 }
 #endif
@@ -1821,6 +1815,7 @@ void process_commands()
             #endif //NONLINEAR_BED_LEVELING
 
             int probePointCounter = 0;
+            float measured_z_last = 0;
             for (int yCount=0; yCount < ACCURATE_BED_LEVELING_POINTS; yCount++)
             {
               float yProbe = FRONT_PROBE_BED_POSITION + ACCURATE_BED_LEVELING_GRID_Y * yCount;
@@ -1848,6 +1843,27 @@ void process_commands()
                 float z_before = probePointCounter == 0 ? Z_RAISE_BEFORE_PROBING :
                   current_position[Z_AXIS] + Z_RAISE_BETWEEN_PROBINGS;
                 float measured_z = probe_pt(xProbe, yProbe, z_before);
+
+                // Do some sanity checks
+                if (probePointCounter == 0) {
+                    // If measured z coordinate of first point deviates more than
+                    // +/- Z_PROBE_ZERO_MAX_DEVIATION from 0 assume measurement error
+                    // and repeat measurement.
+                    while(abs(measured_z) > Z_PROBE_ZERO_MAX_DEVIATION) {
+                        SERIAL_PROTOCOLPGM("ERROR: Too much deviation from 0. Repeating...\n");
+                        measured_z = probe_pt(xProbe, yProbe, z_before);
+                    }
+                } else {
+                    // If measured z coordinate deviates more than +/- z_max_delta
+                    // from value measured for the previous test point assume error
+                    // and repeat measurement.
+                    float z_max_delta = sqrt(max(abs(xProbe), abs(yProbe)) + 9) / 3 * Z_PROBE_DELTA_FACTOR;
+                    while((measured_z_last + z_max_delta < measured_z) || (measured_z_last - z_max_delta > measured_z)) {
+                        SERIAL_PROTOCOLPGM("ERROR: Delta to previous measurement too high. Repeating...\n");
+                        measured_z = probe_pt(xProbe, yProbe, z_before);
+                    }
+                }
+                measured_z_last = measured_z;
 
                 #ifdef NONLINEAR_BED_LEVELING
                 bed_level[xCount][yCount] = measured_z + z_offset;

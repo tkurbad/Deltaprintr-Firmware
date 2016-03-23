@@ -309,6 +309,15 @@
 // actual motor currents in Amps, need as many here as DIGIPOT_I2C_NUM_CHANNELS
 #define DIGIPOT_I2C_MOTOR_CURRENTS {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}
 
+// FSR Bed Leveling Sanitizing
+#ifdef FSR_BED_LEVELING
+  #define Z_PROBE_ZERO_MAX_DEVIATION 1.5    // Maximum zero deviation (+/-) of first FSR probe point (MANUAL_Z_HOME_POS should be set as exactly as possible)
+  #define Z_PROBE_DELTA_FACTOR 0.25         // Maximum delta factor (+/-) between to successive FSR probe point Z positions.
+                                            // The real value is dependent of the probe point coordinates.
+                                            // For the center of the bed, it is Z_PROBE_DELTA_FACTOR, for all other x, y coordinates it is derived by
+                                            // sqrt(max(abs(x), abs(y)) + 9) / 3 * Z_PROBE_MAX_DELTA.
+                                            // Thus, the value is the bigger the farther from the center the probe is.
+#endif
 //===========================================================================
 //=============================Additional Features===========================
 //===========================================================================

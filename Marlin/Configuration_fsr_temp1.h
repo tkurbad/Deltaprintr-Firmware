@@ -488,7 +488,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
                                 // Original Deltaprintr J-Head setting
 //#define MANUAL_Z_HOME_POS 317.8 // E3Dv6 all metal hotend setting
 //#define MANUAL_Z_HOME_POS 302.4 // E3Dv6 all metal hotend + heated bed setting (standard FSR standoffs)
-#define MANUAL_Z_HOME_POS 306.1 // E3Dv6 all metal hotend + heated bed setting (modified FSR standoffs)
+#define MANUAL_Z_HOME_POS 306.4 // E3Dv6 all metal hotend + heated bed setting (modified FSR standoffs)
 
 //// MOVEMENT SETTINGS
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
